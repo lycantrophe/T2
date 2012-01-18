@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -24,14 +22,11 @@ public class ButtonsNText extends JPanel {
     private JToggleButton LowerCaseButton;
     private JCheckBox ContinuousButton;
     private MyActionListener al;
-    // private MyDocListener dl;
-    private Textmod textmod;
     private boolean tUpper = false;
 
     public ButtonsNText() {
         // Add elemnts to panel
 
-        textmod = new Textmod();
         al = new MyActionListener();
         KeyListener kl = new KeyListener() {
 
@@ -97,25 +92,6 @@ public class ButtonsNText extends JPanel {
 
     }
 
-    private class MyDocListener implements DocumentListener {
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-        }
-
-        public void removeUpdate(DocumentEvent e) {
-            textmod.setTextField(TextLine.getText());
-            textmod.changeCase();
-            TextLine.setText(textmod.getTextField());
-        }
-
-        public void insertUpdate(DocumentEvent e) {
-            textmod.setTextField(TextLine.getText());
-            textmod.changeCase();
-            TextLine.setText(textmod.getTextField());
-        }
-    }
-
     private class MyActionListener implements ActionListener {
 
         @Override
@@ -135,55 +111,6 @@ public class ButtonsNText extends JPanel {
                 text = tUpper == true ? text.toUpperCase() : text.toLowerCase();
                 TextLine.setText(text);
             }
-        }
-    }
-
-    private class Textmod {
-
-        private boolean tUpper;
-        private boolean continuous;
-        private String textField;
-
-        Textmod() {
-            tUpper = false;
-            continuous = false;
-            textField = "";
-        }
-
-        // Takes boolean value. True if upper, false if lower.
-        public void casePressed(boolean upper) {
-            if (upper) {
-                tUpper = true;
-            } else {
-                tUpper = false;
-            }
-            this.changeCase();
-        }
-
-        public void contPressed() {
-            continuous = !continuous;
-        }
-
-        public void changeCase() {
-            if (tUpper) {
-                textField.toUpperCase();
-            } else {
-                textField.toLowerCase();
-            }
-        }
-
-        /**
-         * @return the textField
-         */
-        public String getTextField() {
-            return textField;
-        }
-
-        /**
-         * @param textField the textField to set
-         */
-        public void setTextField(String text) {
-            this.textField = text;
         }
     }
 
