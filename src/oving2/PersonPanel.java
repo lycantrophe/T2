@@ -27,44 +27,54 @@ public class PersonPanel extends JPanel implements PropertyChangeListener {
     javax.swing.JTextField DateOfBirthPropertyComponent;
     javax.swing.JComboBox GenderPropertyComponent;
     javax.swing.JSlider HeightPropertyComponent;
+    GridBagConstraints c;
+    myChangeListener cl;
+    myActionListener ae;
 
     public PersonPanel() {
 
         this.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-
-        myChangeListener cl = new myChangeListener();
-        myActionListener ae = new myActionListener();
 
         person = new Person("Dummy");
 
         NamePropertyComponent = new javax.swing.JTextField("", 50);
-        NamePropertyComponent.addActionListener(ae);
         NamePropertyComponent.setName("NamePropertyComponent");
         c.gridy = 0;
         add(new JLabel("name:"), c);
         add(NamePropertyComponent, c);
 
         EmailPropertyComponent = new javax.swing.JTextField("", 50);
-        EmailPropertyComponent.addActionListener(ae);
         EmailPropertyComponent.setName("EmailPropertyComponent");
         c.gridy = 1;
         add(new JLabel("email:"), c);
         add(EmailPropertyComponent, c);
 
         DateOfBirthPropertyComponent = new JTextField("", 10);
-        DateOfBirthPropertyComponent.addActionListener(ae);
         DateOfBirthPropertyComponent.setName("DateOfBirthPropertyComponent");
         c.gridy = 2;
-        add(new JLabel("gender:"), c);
+        add(new JLabel("date of birth:"), c);
         add(DateOfBirthPropertyComponent, c);
+
+        setVisible(true);
+
+    }
+
+    public void setUpRest() {
+
+        cl = new myChangeListener();
+        ae = new myActionListener();
+
+        NamePropertyComponent.addActionListener(ae);
+        EmailPropertyComponent.addActionListener(ae);
+        DateOfBirthPropertyComponent.addActionListener(ae);
 
         GenderPropertyComponent = new JComboBox(Person.Gender.values());
         GenderPropertyComponent.addActionListener(ae);
         GenderPropertyComponent.setName("GenderPropertyComponent");
         c.gridy = 3;
-        add(new JLabel("date of birth:"), c);
+        add(new JLabel("gender:"), c);
         add(GenderPropertyComponent, c);
 
         HeightPropertyComponent = new JSlider(100, 200);
@@ -77,9 +87,6 @@ public class PersonPanel extends JPanel implements PropertyChangeListener {
         c.gridy = 4;
         add(new JLabel("height:"), c);
         add(HeightPropertyComponent, c);
-
-        setVisible(true);
-
     }
 
     private class myActionListener implements ActionListener {
@@ -122,17 +129,13 @@ public class PersonPanel extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("NAME")) {
             NamePropertyComponent.setText(person.getName());
-        }
-        if (evt.getPropertyName().equals("EMAIL")) {
+        } else if (evt.getPropertyName().equals("EMAIL")) {
             EmailPropertyComponent.setText(person.getEmail());
-        }
-        if (evt.getPropertyName().equals("HEIGHT")) {
+        } else if (evt.getPropertyName().equals("DATEOFBIRTH")) {
             DateOfBirthPropertyComponent.setText(person.getDateOfBirth());
-        }
-        if (evt.getPropertyName().equals("GENDER")) {
+        } else if (evt.getPropertyName().equals("GENDER")) {
             GenderPropertyComponent.setSelectedItem(person.getGender());
-        }
-        if (evt.getPropertyName().equals("HEIGHT")) {
+        } else if (evt.getPropertyName().equals("HEIGHT")) {
             HeightPropertyComponent.setValue(person.getHeight());
         }
     }
@@ -141,19 +144,20 @@ public class PersonPanel extends JPanel implements PropertyChangeListener {
 
         JFrame canvas = new JFrame();
         JFrame passiveCanvas = new JFrame();
-        
+
         PersonPanel pp = new PersonPanel();
-        PersonPanel passivepp = new PersonPanel();
-        Person person = new Person( "Annemerete" );
-        
-        passivepp.setModel( person );
+        pp.setUpRest();
+        PassivePanel passivepp = new PassivePanel();
+        passivepp.setUpRest();
+        Person person = new Person("Annemerete");
+
+        passivepp.setModel(person);
         pp.setModel(person);
 
         canvas.add(pp);
         canvas.pack();
         canvas.setVisible(true);
-        
-        
+
         passiveCanvas.add(passivepp);
         passiveCanvas.pack();
         passiveCanvas.setVisible(true);
